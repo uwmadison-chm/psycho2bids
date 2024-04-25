@@ -5,7 +5,7 @@ def write_first_fixation(writer, row, t0):
     onset = float(row['fixation_one.started']) - t0
     duration = float(row['fixation_one.stopped']) - float(row['fixation_one.started'])
     trial_type = 'difficult' if row['isDifficult'] == '1' else 'easy'
-    writer.writerow([onset, duration, 'n/a', 'n/a', row['targetLetter'], 'fixation1', trial_type, 'n/a', 'n/a', 'n/a', 'n/a'])
+    writer.writerow([onset, duration, 'n/a', 'n/a', row['targetLetter'], 'n/a', 'fixation1', trial_type, 'n/a', 'n/a', 'n/a', 'n/a'])
 
 def write_first_half(writer, row, t0):
     onset = float(row['target.started']) - t0
@@ -15,7 +15,7 @@ def write_first_half(writer, row, t0):
     trial_type = 'difficult' if row['isDifficult'] == '1' else 'easy'
     response_time = "n/a" if not row['resp_one.rt'] else row['resp_one.rt']
     correct = is_correct(row['targetLetter'], row['resp_one.keys'])
-    writer.writerow([onset, duration, onset_masked, duration_masked, row['targetLetter'], 'probe1', trial_type, response_time, correct, 'n/a', 'n/a'])
+    writer.writerow([onset, duration, onset_masked, duration_masked, row['targetLetter'], row['resp_one.keys'], 'probe1', trial_type, response_time, correct, 'n/a', 'n/a'])
 
 def write_feedback(writer, row, t0):
     onset = float(row['feedback.started']) - t0
@@ -23,14 +23,14 @@ def write_feedback(writer, row, t0):
     trial_type = 'difficult' if row['isDifficult'] == '1' else 'easy'
     response_time = "n/a"
     correct = is_correct(row['targetLetter'], row['resp_one.keys'])
-    writer.writerow([onset, duration, 'n/a', 'n/a', row['targetLetter'], 'feedback', trial_type, response_time, 'n/a',
+    writer.writerow([onset, duration, 'n/a', 'n/a', row['targetLetter'], 'n/a', 'feedback', trial_type, response_time, 'n/a',
                      feedback_text(row['accurateFeedback'] == '1', correct), row['accurateFeedback']])
     
 def write_second_fixation(writer, row, t0):
     onset = float(row['fixation_two.started']) - t0
     duration = float(row['fixation_two.stopped']) - float(row['fixation_two.started'])
     trial_type = 'difficult' if row['isDifficult'] == '1' else 'easy'
-    writer.writerow([onset, duration, 'n/a', 'n/a', row['targetLetter'], 'fixation2', trial_type, 'n/a', 'n/a', 'n/a', 'n/a'])
+    writer.writerow([onset, duration, 'n/a', 'n/a', row['targetLetter'], 'n/a', 'fixation2', trial_type, 'n/a', 'n/a', 'n/a', 'n/a'])
 
 def write_second_half(writer, row, t0):
     onset = float(row['target_two.started']) - t0
@@ -40,7 +40,7 @@ def write_second_half(writer, row, t0):
     trial_type = 'difficult' if row['isDifficult'] == '1' else 'easy'
     response_time = "n/a" if not row['resp_two.rt'] else row['resp_two.rt']
     correct = is_correct(row['targetLetter'], row['resp_two.keys'])
-    writer.writerow([onset, duration, onset_masked, duration_masked, row['targetLetter'], 'probe2', trial_type, response_time, correct, 'n/a', 'n/a'])
+    writer.writerow([onset, duration, onset_masked, duration_masked, row['targetLetter'], row['resp_two.keys'], 'probe2', trial_type, response_time, correct, 'n/a', 'n/a'])
 
 def is_correct(target, key):
     return (target == 'T' and key == 'b') or (target == 'L' and key == 'y')
@@ -58,7 +58,7 @@ def convert(filename):
         reader = csv.DictReader(psy_file)
         writer = None
 
-        headers = ['onset', 'duration', 'onset_masked', 'duration_masked', 'target_letter', 'event_type', 'trial_type', 'response_time', 'correct', 'feedback_text', 'feedback_accurate']
+        headers = ['onset', 'duration', 'onset_masked', 'duration_masked', 'target_letter', 'input', 'event_type', 'trial_type', 'response_time', 'correct', 'feedback_text', 'feedback_accurate']
 
         t0_first_half = None
         t0_second_half = None
