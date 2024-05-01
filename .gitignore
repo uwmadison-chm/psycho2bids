@@ -3,3 +3,4 @@ venv/
 *.tsv
 *.json
 clean.sh
+.DS_Store
